@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalgue
+  labels:
+    app: catalgue
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: catalgue
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 4
+  template:
+    metadata:
+      labels:
+        app: catalgue
+    spec:
+      containers:
+        - name: catalgue
+          image: amadioha/app-master
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: catalogue-configmap
+            - secretRef:
+                name: catalogue-secret
